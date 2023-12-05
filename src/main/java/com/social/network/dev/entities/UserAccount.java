@@ -25,7 +25,7 @@ public class UserAccount {
     private String email;
     private String password;
     @Column(columnDefinition = "tinyint(1) default 1")
-    private Boolean is_active;
+    private Boolean active;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
     private LocalDate created_at;
@@ -44,7 +44,7 @@ public class UserAccount {
         this.setUsername(userAccountDTO.getUsername());
         this.setEmail(userAccountDTO.getEmail());
         this.setPassword(userAccountDTO.getPassword());
-        this.setIs_active(true);
+        this.setActive(true);
         return this;
     }
 

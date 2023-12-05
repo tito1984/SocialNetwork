@@ -19,9 +19,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccountRepository userAccountRepository;
 
 
-    //   Todo: filter this method to return only the users with the value true in the is_active field
     public List<UserAccount> getUsers() {
-        return userAccountRepository.findAll();
+        return userAccountRepository.findByActiveTrue();
     }
 
 
@@ -41,13 +40,13 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     public UserAccount updateUser(UserAccount request, Long id) {
         UserAccount user = userAccountRepository.findById(id).orElseThrow();
-//      Todo: fix this to change only one field
         if (request.getUsername() != null) {
             user.setUsername(request.getUsername());
         }
         if (request.getPassword() != null) {
             user.setPassword(request.getPassword());
         }
+//        Todo: Set the date when the user is updated
 
         return userAccountRepository.save(user);
 
@@ -56,7 +55,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     public void deleteUser(Long id) {
         UserAccount user = userAccountRepository.findById(id).orElseThrow();
-        user.setIs_active(false);
+        user.setActive(false);
+//        todo: set the date when the user is deleted
         userAccountRepository.save(user);
     }
 
