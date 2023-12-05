@@ -1,10 +1,12 @@
 package com.social.network.dev.controllers;
 
 import com.social.network.dev.dto.UserAccountDTO;
+import com.social.network.dev.dto.UserResponse;
 import com.social.network.dev.entities.UserAccount;
 
 import com.social.network.dev.service.UserAccountService;
 
+import com.social.network.dev.utilities.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,13 @@ public class UserAccountController {
     private UserAccountService userAccountService;
 
     @GetMapping("/list")
-    public List<UserAccount> getUsers() {
-        return this.userAccountService.getUsers();
+    public UserResponse getUsers(
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.NUMBER_OF_PAGE_BY_DEFAULT, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.SIZE_OF_PAGE_BY_DEFAULT, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY_DEFAULT, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIRECTION_BY_DEFAULT, required = false) String sortDir
+    ) {
+        return this.userAccountService.getUsers(pageNo, pageSize, sortBy, sortDir);
     }
 
     @PostMapping("/create")

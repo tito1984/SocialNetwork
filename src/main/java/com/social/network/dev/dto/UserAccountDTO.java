@@ -28,8 +28,6 @@ public class UserAccountDTO {
     @NotEmpty(message = "Password cant be empty")
     @Size(min = 8, message = "Password must have at least 3")
     private String password;
-    private Boolean is_active;
-    private Date created_at;
 
 
     @Builder

@@ -1,17 +1,22 @@
 package com.social.network.dev.service.impl;
 
 import com.social.network.dev.dto.UserAccountDTO;
+import com.social.network.dev.dto.UserResponse;
 import com.social.network.dev.entities.UserAccount;
 import com.social.network.dev.repository.UserAccountRepository;
 import com.social.network.dev.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -19,8 +24,31 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccountRepository userAccountRepository;
 
 
-    public List<UserAccount> getUsers() {
-        return userAccountRepository.findByActiveTrue();
+    //    todo: return the results with pagination
+    public UserResponse getUsers(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        PageRequest pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<UserAccount> users = userAccountRepository.findByActiveTrue(pageable);
+
+        List<UserAccount> userList = users.getContent();
+
+        List<UserAccountDTO> content = userList.stream().map(user -> user.mapDTO())
+                .toList();
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setContent(content);
+        userResponse.setPageNumber(users.getNumber());
+        userResponse.setPageSize(users.getSize());
+        userResponse.setTotalElements(users.getTotalElements());
+        userResponse.setTotalPages(users.getTotalPages());
+        userResponse.setLastPage(users.isLast());
+
+        return userResponse;
+
     }
 
 
