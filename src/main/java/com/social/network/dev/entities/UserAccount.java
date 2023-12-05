@@ -9,7 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 
 
 @Entity
@@ -28,9 +29,9 @@ public class UserAccount {
     private Boolean active;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
-    private LocalDate created_at;
-    private LocalDate modified_at;
-    private LocalDate deleted_at;
+    private Date created_at;
+    private Date modified_at;
+    private Date deleted_at;
 
     public UserAccountDTO mapDTO() {
         UserAccountDTO UserAccountDTO = new UserAccountDTO();

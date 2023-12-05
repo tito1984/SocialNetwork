@@ -6,10 +6,10 @@ import com.social.network.dev.repository.UserAccountRepository;
 import com.social.network.dev.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +46,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (request.getPassword() != null) {
             user.setPassword(request.getPassword());
         }
-//        Todo: Set the date when the user is updated
+
+        user.setModified_at(new Date());
 
         return userAccountRepository.save(user);
 
@@ -56,7 +57,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void deleteUser(Long id) {
         UserAccount user = userAccountRepository.findById(id).orElseThrow();
         user.setActive(false);
-//        todo: set the date when the user is deleted
+        user.setDeleted_at(new Date());
         userAccountRepository.save(user);
     }
 

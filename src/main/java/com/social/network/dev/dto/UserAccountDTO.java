@@ -1,10 +1,6 @@
 package com.social.network.dev.dto;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -13,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -33,7 +29,7 @@ public class UserAccountDTO {
     @Size(min = 8, message = "Password must have at least 3")
     private String password;
     private Boolean is_active;
-    private LocalDate created_at;
+    private Date created_at;
 
 
     @Builder
