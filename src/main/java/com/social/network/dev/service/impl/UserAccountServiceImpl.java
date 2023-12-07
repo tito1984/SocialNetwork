@@ -3,6 +3,7 @@ package com.social.network.dev.service.impl;
 import com.social.network.dev.dto.UserAccountDTO;
 import com.social.network.dev.dto.UserResponse;
 import com.social.network.dev.entities.UserAccount;
+import com.social.network.dev.exceptions.ResourceNotFoundException;
 import com.social.network.dev.repository.UserAccountRepository;
 import com.social.network.dev.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -24,7 +24,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     UserAccountRepository userAccountRepository;
 
 
-    //    todo: return the results with pagination
     public UserResponse getUsers(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -61,13 +60,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         return newUserAccount.mapDTO();
     }
 
-    public Optional<UserAccount> getUserById(Long id) {
-        return userAccountRepository.findById(id);
+    public UserAccount getUserById(Long id) {
+        return userAccountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "UserAccount", "id", id));
 
     }
 
     public UserAccount updateUser(UserAccount request, Long id) {
-        UserAccount user = userAccountRepository.findById(id).orElseThrow();
+        UserAccount user = userAccountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "UserAccount", "id", id));
         if (request.getUsername() != null) {
             user.setUsername(request.getUsername());
         }
@@ -83,7 +84,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     public void deleteUser(Long id) {
-        UserAccount user = userAccountRepository.findById(id).orElseThrow();
+        UserAccount user = userAccountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                "UserAccount", "id", id));
         user.setActive(false);
         user.setDeleted_at(new Date());
         userAccountRepository.save(user);

@@ -15,7 +15,7 @@ public interface UserAccountService {
 
     public UserAccountDTO saveUser(UserAccountDTO userAccountDTO);
 
-    public Optional<UserAccount> getUserById(Long id);
+    public UserAccount getUserById(Long id);
 
     public UserAccount updateUser(UserAccount request, Long id);
 

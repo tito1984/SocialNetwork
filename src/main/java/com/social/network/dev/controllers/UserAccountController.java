@@ -39,7 +39,7 @@ public class UserAccountController {
     }
 
     @GetMapping("/{id}")
-    public Optional<UserAccount> getUserById(@PathVariable Long id) {
+    public UserAccount getUserById(@PathVariable Long id) {
         return this.userAccountService.getUserById(id);
     }
 
